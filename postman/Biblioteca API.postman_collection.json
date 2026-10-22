@@ -1,0 +1,667 @@
+{
+  "info": {
+    "name": "Biblioteca API (Django + DRF)",
+    "description": "Collection para estudar Django REST Framework. A API é aberta: não precisa de login nem token.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:8000/api"
+    },
+    {
+      "key": "autor_id",
+      "value": "1"
+    },
+    {
+      "key": "livro_id",
+      "value": "1"
+    },
+    {
+      "key": "categoria_id",
+      "value": "1"
+    }
+  ],
+  "item": [
+    {
+      "name": "Autores (APIView)",
+      "item": [
+        {
+          "name": "Listar autores",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/autores/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "autores",
+                ""
+              ]
+            }
+          }
+        },
+        {
+          "name": "Listar autores por nacionalidade",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/autores/?nacionalidade=Brasileira",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "autores",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "nacionalidade",
+                  "value": "Brasileira"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Criar autor",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) pm.collectionVariables.set('autor_id', pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Jorge Amado\",\n  \"email\": \"jorge@exemplo.com\",\n  \"nacionalidade\": \"Brasileira\",\n  \"data_nascimento\": \"1912-08-10\",\n  \"biografia\": \"Escritor baiano.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/autores/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "autores",
+                ""
+              ]
+            }
+          }
+        },
+        {
+          "name": "Detalhar autor",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/autores/{{autor_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "autores",
+                "{{autor_id}}",
+                ""
+              ]
+            }
+          }
+        },
+        {
+          "name": "Atualizar autor (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Jorge Amado\",\n  \"email\": \"jorge.amado@exemplo.com\",\n  \"nacionalidade\": \"Brasileira\",\n  \"data_nascimento\": \"1912-08-10\",\n  \"biografia\": \"Autor de Capitães da Areia.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/autores/{{autor_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "autores",
+                "{{autor_id}}",
+                ""
+              ]
+            }
+          }
+        },
+        {
+          "name": "Atualizar autor parcialmente (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"biografia\": \"Só a biografia mudou.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/autores/{{autor_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "autores",
+                "{{autor_id}}",
+                ""
+              ]
+            }
+          }
+        },
+        {
+          "name": "Livros do autor",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/autores/{{autor_id}}/livros/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "autores",
+                "{{autor_id}}",
+                "livros",
+                ""
+              ]
+            }
+          }
+        },
+        {
+          "name": "Excluir autor",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{base_url}}/autores/{{autor_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "autores",
+                "{{autor_id}}",
+                ""
+              ]
+            }
+          }
+        },
+        {
+          "name": "Erro de validação (nome curto)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"AB\",\n  \"email\": \"email-invalido\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/autores/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "autores",
+                ""
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Categorias (Generic Views)",
+      "item": [
+        {
+          "name": "Listar categorias",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/categorias/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "categorias",
+                ""
+              ]
+            }
+          }
+        },
+        {
+          "name": "Buscar categoria",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/categorias/?search=fic",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "categorias",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "fic"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Criar categoria",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) pm.collectionVariables.set('categoria_id', pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Terror\",\n  \"descricao\": \"Livros de terror e suspense\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/categorias/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "categorias",
+                ""
+              ]
+            }
+          }
+        },
+        {
+          "name": "Detalhar categoria",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/categorias/{{categoria_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "categorias",
+                "{{categoria_id}}",
+                ""
+              ]
+            }
+          }
+        },
+        {
+          "name": "Atualizar categoria (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"descricao\": \"Descrição atualizada\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/categorias/{{categoria_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "categorias",
+                "{{categoria_id}}",
+                ""
+              ]
+            }
+          }
+        },
+        {
+          "name": "Excluir categoria",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{base_url}}/categorias/{{categoria_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "categorias",
+                "{{categoria_id}}",
+                ""
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Livros (ViewSet + Router)",
+      "item": [
+        {
+          "name": "Listar livros (paginado)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/livros/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "livros",
+                ""
+              ]
+            }
+          }
+        },
+        {
+          "name": "Buscar + ordenar livros",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/livros/?search=orwell&ordering=-preco",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "livros",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "orwell"
+                },
+                {
+                  "key": "ordering",
+                  "value": "-preco"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Filtrar livros",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/livros/?disponivel=true&categoria=1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "livros",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "disponivel",
+                  "value": "true"
+                },
+                {
+                  "key": "categoria",
+                  "value": "1"
+                },
+                {
+                  "key": "autor",
+                  "value": "1",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "2",
+                  "disabled": true
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Criar livro",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) pm.collectionVariables.set('livro_id', pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Quincas Borba\",\n  \"isbn\": \"9788508133059\",\n  \"ano_publicacao\": 1891,\n  \"paginas\": 312,\n  \"preco\": \"32.50\",\n  \"autor_id\": 1,\n  \"categoria_id\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/livros/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "livros",
+                ""
+              ]
+            }
+          }
+        },
+        {
+          "name": "Detalhar livro",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/livros/{{livro_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "livros",
+                "{{livro_id}}",
+                ""
+              ]
+            }
+          }
+        },
+        {
+          "name": "Atualizar livro (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"preco\": \"19.90\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/livros/{{livro_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "livros",
+                "{{livro_id}}",
+                ""
+              ]
+            }
+          }
+        },
+        {
+          "name": "Alternar disponibilidade (@action detail=True)",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{base_url}}/livros/{{livro_id}}/alternar-disponibilidade/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "livros",
+                "{{livro_id}}",
+                "alternar-disponibilidade",
+                ""
+              ]
+            }
+          }
+        },
+        {
+          "name": "Estatísticas (@action detail=False)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/livros/estatisticas/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "livros",
+                "estatisticas",
+                ""
+              ]
+            }
+          }
+        },
+        {
+          "name": "Excluir livro",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{base_url}}/livros/{{livro_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "livros",
+                "{{livro_id}}",
+                ""
+              ]
+            }
+          }
+        },
+        {
+          "name": "Erro de validação (ISBN e ano)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Livro do Futuro\",\n  \"isbn\": \"abc\",\n  \"ano_publicacao\": 3000,\n  \"paginas\": 100,\n  \"preco\": \"10.00\",\n  \"autor_id\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/livros/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "livros",
+                ""
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
